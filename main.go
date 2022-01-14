@@ -3,13 +3,15 @@ package main
 import (
 	"fmt"
 	"eth/core"
+	"eth/consensus"
 )
 
 func main(){
 	fmt.Println("Call from main")
 	chain := core.CreateNewChain()
-	core.AddBlock(chain)
-	core.AddBlock(chain)
-	core.AddBlock(chain)
-	fmt.Println(core.ViewBlockHeight(chain))
+	miner := consensus.CreateMiner("miner1")
+	miner.Work("hi", chain)
+	miner.Work("hi23", chain)
+	miner.Work("hdsfai", chain)
+	core.ViewBlockchain(chain)
 }
