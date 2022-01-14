@@ -5,25 +5,37 @@ import (
 	"strconv"
 	"eth/core"
 	"eth/consensus"
-	"sync"
+//	"sync"
 )
 
 func main(){
 	chain := core.CreateNewChain()
-	var wg sync.WaitGroup
+	done := make(chan bool)
+	jobs := make(chan string)
 
 	for w:=0; w<3; w++{
-		w := w
-		wg.Add(1)
+		w:= w
 		go func(){
-			defer wg.Done()
-			fmt.Println(strconv.Itoa(w))
-			name := "miner"+ strconv.Itoa(w)
-			miner := consensus.CreateMiner(name)
-			miner.Work("work!", chain)
+			miner := consensus.CreateMiner("miner"+ strconv.Itoa(w))
+
+			for{
+				j, more := <- jobs
+				if more{
+					miner.Work(j, chain)
+				}else{
+					fmt.Println("done all jobs")
+					done <- true
+				}
+			}
 		}()
 	}
-	wg.Wait()
+
+	for j:=0; j<20; j++{
+		jobs <- strconv.Itoa(j)
+	}
+
+	close(jobs)
+	<- done
 
 	core.ViewBlockchain(chain)
 }
