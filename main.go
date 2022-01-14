@@ -7,5 +7,9 @@ import (
 
 func main(){
 	fmt.Println("Call from main")
-	core.Test()
+	chain := core.CreateNewChain()
+	core.AddBlock(chain)
+	core.AddBlock(chain)
+	core.AddBlock(chain)
+	fmt.Println(core.ViewBlockHeight(chain))
 }
