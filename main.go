@@ -1,14 +1,14 @@
 package main
 
 import (
-	"fmt"
+//	"fmt"
 	"eth/core"
 	"eth/consensus"
 )
 
 func main(){
-	fmt.Println("Call from main")
 	chain := core.CreateNewChain()
+
 	miner := consensus.CreateMiner("miner1")
 	miner.Work("hi", chain)
 	miner.Work("hi23", chain)

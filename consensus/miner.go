@@ -3,6 +3,8 @@ package consensus
 import (
 	"fmt"
 	"eth/core"
+	"time"
+	"math/rand"
 )
 
 type miner struct{
@@ -15,7 +17,9 @@ func CreateMiner(name string)*miner{
 }
 
 func (m miner)Work(msg string, chain *core.Blockchain){
-	fmt.Println("miner", m.name, "is working!")
+	//will produce a block ranging from 0.5-2 seconds
+	time.Sleep(time.Duration(rand.Int31n(1500)+500)*time.Millisecond)
+	fmt.Println("Miner", m.name, "is working!")
 	core.AddBlock(chain, m.name, msg)
 	m.rewards += 1
 

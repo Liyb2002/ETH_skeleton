@@ -1,7 +1,7 @@
 package core
 
 import (
-	"fmt"
+//	"fmt"
 )
 
 type block struct{
@@ -17,6 +17,5 @@ func GenesisBlock()*block{
 
 func CreateNewBlock(miner string, msg string, prev *block) *block{
 	newBlock := block{miner, msg, prev}
-	fmt.Println("new block!")
 	return &newBlock
 }
