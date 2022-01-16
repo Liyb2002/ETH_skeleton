@@ -26,14 +26,22 @@ func CreateNewTxPool()*TxPool{
 	return &TxPool{timeStamp:time.Now(), txList:[] *Tx{gensisTx} }
 }
 
-func AddTxToPool(pool *TxPool, txInstance *Tx){
-	fmt.Println("hi")
+func (pool *TxPool)AddTxToPool(txInstance *Tx) [] *Tx{
+	//Maxium tx in a pool is 9
+	if len(pool.txList)<=9{
+		pool.txList = append(pool.txList, txInstance)
+		return pool.txList
+	}else{
+		return pool.txList
+	}
 }
 
 
 //View functions
 func ViewTxPool(pool *TxPool){
-	fmt.Println("hi")
+	for _,tx := range (*pool).txList{
+		ViewTx(tx)
+	}
 }
 
 func ViewTx(tx *Tx){

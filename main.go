@@ -13,8 +13,11 @@ func main(){
 	consensus.RunMiner(chain, 10, 5)
 	core.ViewBlockchain(chain)
 	*/
-
-	NewTx := core.CreateNewTx("yb", "hjh", 10)
-	core.ViewTx(NewTx)
-
+	
+	NewPool := core.CreateNewTxPool()
+	for i:=0; i<100; i++{
+	NewTx := core.CreateNewTx("yb", "hjh", int64(i))
+	NewPool.AddTxToPool(NewTx)
+	}
+	core.ViewTxPool(NewPool)
 }
