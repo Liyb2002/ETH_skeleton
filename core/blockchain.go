@@ -11,9 +11,9 @@ type Blockchain struct{
 }
 
 
-func AddBlock(bc *Blockchain, miner string, msg string, txPool *TxPool){
+func AddBlock(bc *Blockchain, miner string, msg string, pool *TxPool){
 	fmt.Println("Add a new Block!")
-	thisblock := CreateNewBlock(miner, msg, (*bc).currentBlock, txPool)
+	thisblock := CreateNewBlock(miner, msg, (*bc).currentBlock, pool)
 	(*bc).currentBlock = thisblock
 	(*bc).blockHeight = (*bc).blockHeight+1
 }
@@ -33,8 +33,15 @@ func ViewBlockHeight(bc *Blockchain)int64{
 
 func ViewBlockchain(bc *Blockchain){
 	block := (*bc).currentBlock 
+
 	for block!=nil{
-		fmt.Println("Block mined by", (*block).miner, "with msg",  (*block).msg)
+		fmt.Println("Block mined by", (*block).miner, "with msg",  (*block).msg, "at time", (*block).timeStamp)
+		
+		//Genesis block has no txPool
+		if block.txPool!=nil{
+			ViewTxPool((*block).txPool)
+		}
+		fmt.Println("\n")
 		block=block.prev
 	}
 }
