@@ -6,7 +6,7 @@ import (
 	"eth/core"
 )
 
-func RunMiner(bc *core.Blockchain, numberOfBlocks int, numberOfMiners int){
+func RunMiner(bc *core.Blockchain, numberOfBlocks int, numberOfMiners int, pool *core.TxPool){
 	done := make(chan bool)
 	jobs := make(chan string)
 
@@ -18,7 +18,7 @@ func RunMiner(bc *core.Blockchain, numberOfBlocks int, numberOfMiners int){
 			for{
 				j, more := <- jobs
 				if more{
-					miner.Work(j, bc)
+					miner.Work(j, bc, pool)
 				}else{
 					fmt.Println("done all jobs")
 					done <- true

@@ -11,9 +11,9 @@ type Blockchain struct{
 }
 
 
-func AddBlock(bc *Blockchain, miner string, msg string){
+func AddBlock(bc *Blockchain, miner string, msg string, txPool *TxPool){
 	fmt.Println("Add a new Block!")
-	thisblock := CreateNewBlock(miner, msg, (*bc).currentBlock)
+	thisblock := CreateNewBlock(miner, msg, (*bc).currentBlock, txPool)
 	(*bc).currentBlock = thisblock
 	(*bc).blockHeight = (*bc).blockHeight+1
 }
