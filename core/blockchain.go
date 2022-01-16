@@ -2,6 +2,7 @@ package core
 
 import (
 	"fmt"
+	"time"
 )
 
 type Blockchain struct{
@@ -12,10 +13,13 @@ type Blockchain struct{
 
 
 func AddBlock(bc *Blockchain, miner string, msg string, pool *TxPool){
+	currentTime := time.Now()
+	if currentTime.Sub((*bc).currentBlock.timeStamp) > 2*time.Second{
 	fmt.Println("Add a new Block!")
 	thisblock := CreateNewBlock(miner, msg, (*bc).currentBlock, pool)
 	(*bc).currentBlock = thisblock
 	(*bc).blockHeight = (*bc).blockHeight+1
+	}
 }
 
 func CreateNewChain()*Blockchain{

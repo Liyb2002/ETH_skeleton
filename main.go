@@ -10,6 +10,7 @@ import (
 func main(){
 
 
+
 	NewPool := core.CreateNewTxPool()
 	NewTx := core.CreateNewTx("yb", "hjh", 1)
 	NewPool.AddTxToPool(NewTx)
