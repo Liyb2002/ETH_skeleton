@@ -2,7 +2,7 @@ package consensus
 
 import (
 	"strconv"
-	"fmt"
+//	"fmt"
 	"eth/core"
 	"time"
 	"sync"
@@ -21,39 +21,48 @@ func (c *Container) ranking(name string, hashPw int) {
 }
 
 
-func RunMiner(bc *core.Blockchain, numberOfBlocks int, 
-	numberOfMiners int, pool *core.TxPool, done chan bool, closeRunMiner chan bool){
-		var wg sync.WaitGroup
+func RunMiner(bc *core.Blockchain, numberOfMiners int,  pool *core.TxPool, blockPeriod int)string{
 
 		c:= Container{
 			counters: map[string]int{"genesis":0},
 		}
 
+		done := make(chan bool)
+		ticker := time.NewTicker(100 * time.Millisecond)
+
 	for w:=0; w<numberOfMiners; w++{
-		wg.Add(1)
 		w:= w
 		
 		go func(){
-			ticker := time.NewTicker(100 * time.Millisecond)
 			miner := CreateMiner("miner"+ strconv.Itoa(w))
 
 			for{
 				select{
 				case <- ticker.C:
 					MinerWork(miner, "mining", bc, pool)
-				case <- done:
 					hashPw := MinerReport(miner)
 					c.ranking(miner.name, hashPw)
-					
-					ticker.Stop()
-					wg.Done()
+				case <- done:
 					return 
 				}
 			}
 		}()
 	}
-	wg.Wait()
-	fmt.Println("hello?")
-	fmt.Println(c.counters)
-	closeRunMiner <- true
+
+	time.Sleep(time.Duration(blockPeriod) * time.Millisecond)
+    ticker.Stop()
+    done <- true
+
+//	fmt.Println(c.counters)
+	MaxHashPw := 0;
+	Winner := ""
+	for key, element := range c.counters{
+		if element>MaxHashPw{
+			MaxHashPw=element
+			Winner = key
+		}
+	}
+
+	return Winner
+	
 }

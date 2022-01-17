@@ -7,15 +7,14 @@ import(
 	"eth/core"
 )
 
-func RunBlockchain(bc *core.Blockchain, pool *core.TxPool){
-	
-		done := make(chan bool)
-		closeRunMiner := make(chan bool)
-		go consensus.RunMiner(bc, 10, 5, pool, done, closeRunMiner)
-		time.Sleep(2*time.Second)
-		done <- true
-		close(done)
+func RunBlockchain(bc *core.Blockchain, pool *core.TxPool, blockPeriod int){
+
+		//blockPeriod describes how long time a block would be
+		for{
+		winner := consensus.RunMiner(bc, 5, pool, blockPeriod)
+		fmt.Println("finshed this block, miner is", winner)
+		fmt.Println("\n")
 		time.Sleep(1*time.Second)
-		<- closeRunMiner
+		}
 	
 }

@@ -18,7 +18,7 @@ func main(){
 	core.ViewTxPool(NewPool)
 
 	chain := core.CreateNewChain()
-	initChain.RunBlockchain(chain, NewPool)
+	initChain.RunBlockchain(chain, NewPool, 2000)
 	core.ViewBlockchain(chain)
 
 }
