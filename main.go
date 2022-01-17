@@ -4,11 +4,14 @@ import (
 //	"fmt"
 	"eth/core"
 	"eth/initChain"
+	"eth/server"
 //	"eth/consensus"
 //	"sync"
 )
 
 func main(){
+
+	go server.StartServer()
 
 	NewPool := core.CreateNewTxPool()
 	NewTx := core.CreateNewTx("lyb", "zws", 1)
