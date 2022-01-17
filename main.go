@@ -10,12 +10,9 @@ import (
 
 func main(){
 
-
-
 	NewPool := core.CreateNewTxPool()
-	NewTx := core.CreateNewTx("yb", "hjh", 1)
+	NewTx := core.CreateNewTx("lyb", "zws", 1)
 	NewPool.AddTxToPool(NewTx)
-	core.ViewTxPool(NewPool)
 
 	chain := core.CreateNewChain()
 	initChain.RunBlockchain(chain, NewPool, 2000)
