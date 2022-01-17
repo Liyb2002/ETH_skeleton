@@ -27,7 +27,6 @@ func MinerWork(m *miner, msg string, chain *core.Blockchain, pool *core.TxPool){
 
 }
 
-func MinerReport(m *miner){
-	fmt.Println("miner's hashPw is:", (*m).hashPw)
-
+func MinerReport(m *miner)int{
+	return (*m).hashPw
 }
