@@ -26,3 +26,8 @@ func (m miner)Work(msg string, chain *core.Blockchain, pool *core.TxPool){
 	//m.rewards += 1
 
 }
+
+func (m miner) Report(){
+	fmt.Println(m.hashPw)
+
+}

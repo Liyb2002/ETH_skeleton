@@ -3,7 +3,8 @@ package main
 import (
 //	"fmt"
 	"eth/core"
-	"eth/consensus"
+	"eth/initChain"
+//	"eth/consensus"
 //	"sync"
 )
 
@@ -17,7 +18,7 @@ func main(){
 	core.ViewTxPool(NewPool)
 
 	chain := core.CreateNewChain()
-	consensus.RunMiner(chain, 10, 5, NewPool)
+	initChain.RunBlockchain(chain, NewPool)
 	core.ViewBlockchain(chain)
 
 }
