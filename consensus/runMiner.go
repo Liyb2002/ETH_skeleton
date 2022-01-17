@@ -2,34 +2,31 @@ package consensus
 
 import (
 	"strconv"
-	"fmt"
+//	"fmt"
 	"eth/core"
+	"time"
 )
 
-func RunMiner(bc *core.Blockchain, numberOfBlocks int, numberOfMiners int, pool *core.TxPool){
-	done := make(chan bool)
-	jobs := make(chan string)
+func RunMiner(bc *core.Blockchain, numberOfBlocks int, numberOfMiners int, pool *core.TxPool, 
+	done chan bool){
 
 	for w:=0; w<numberOfMiners; w++{
 		w:= w
 		go func(){
+			ticker := time.NewTicker(100 * time.Millisecond)
 			miner := CreateMiner("miner"+ strconv.Itoa(w))
 
 			for{
-				j, more := <- jobs
-				if more{
-					miner.Work(j, bc, pool)
-				}else{
-					fmt.Println("done all jobs")
-					done <- true
+				select{
+				case <- ticker.C:
+					MinerWork(miner, "mining", bc, pool)
+				case <- done:
+					MinerReport(miner)
+					ticker.Stop()
+					return
 				}
 			}
 		}()
-	}
 
-	for j:=0; j<numberOfBlocks; j++{
-		jobs <- strconv.Itoa(j)
 	}
-	close(jobs)
-	<- done
 }
