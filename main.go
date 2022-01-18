@@ -11,13 +11,8 @@ import (
 
 func main(){
 
-
-	NewPool := core.CreateNewTxPool()
-	NewTx := core.CreateNewTx("lyb", "zws", 1)
-	NewPool.AddTxToPool(NewTx)
-
 	chain := core.CreateNewChain()
 	go server.StartServer(chain)
-	initChain.RunBlockchain(chain, NewPool, 2000)
+	initChain.RunBlockchain(chain, 2000)
 
 }

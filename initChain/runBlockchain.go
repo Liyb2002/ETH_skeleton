@@ -7,12 +7,16 @@ import(
 	"eth/core"
 )
 
-func RunBlockchain(bc *core.Blockchain, pool *core.TxPool, blockPeriod int){
+func RunBlockchain(bc *core.Blockchain, blockPeriod int){
 
 		//blockPeriod describes how long time a block would be
 		for{
-		winner := consensus.RunMiner(bc, 5, pool, blockPeriod)
-		core.AddBlock(bc, winner, "hello world ", pool)
+		NewPool := core.CreateNewTxPool()
+		NewTx := core.CreateNewTx("lyb", "zws", 1)
+		NewPool.AddTxToPool(NewTx)
+		
+		winner := consensus.RunMiner(bc, 5, NewPool, blockPeriod)
+		core.AddBlock(bc, winner, "hello world ", NewPool)
 		fmt.Println("\n")
 		time.Sleep(1*time.Second)
 		}
