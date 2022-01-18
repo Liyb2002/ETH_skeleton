@@ -6,11 +6,20 @@ import(
 	"log"
 	"eth/core"
 	"html/template"
+	"strconv"
 )
 
 type Blockchain struct{
 	info *core.Blockchain
 }
+
+type TxJson struct{
+	sender string `json:"sender"`
+	recipient string `json:"recipient"`
+	amount int `json:"amount"`
+}
+
+var txReceived = []TxJson{}
 
 func (bc *Blockchain) handleViewBlockchain(w http.ResponseWriter, r *http.Request){
 	fmt.Fprintf(w, core.ViewBlockchain(bc.info))
@@ -26,9 +35,20 @@ func editHandler(w http.ResponseWriter, r *http.Request) {
         t.Execute(w, nil)
     } else {
         r.ParseForm()
-		fmt.Println("hhhhhhhhhhhhhh")
-       fmt.Println("username:", r.Form["username"])
-    //    fmt.Println("password:", r.Form["password"])
+		TxSender := r.Form["sender"][0]
+		TxRecipient := r.Form["recipient"][0]
+		TxAmount, _ := strconv.Atoi (r.Form["amount"][0])
+
+		thisTx := TxJson{TxSender, TxRecipient, TxAmount}
+		txReceived=append(txReceived, thisTx)
+
+		//Then reload page
+		t, err := template.ParseFiles("server/tx.html")
+		if err!=nil{
+			panic(err)
+		}
+        t.Execute(w, nil)
+
     }
 }
 
