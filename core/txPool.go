@@ -1,8 +1,10 @@
 package core
 
 import(
-	"fmt"
+//	"fmt"
 	"time"
+	"bytes"
+	"strconv"
 )
 
 type Tx struct{
@@ -38,12 +40,23 @@ func (pool *TxPool)AddTxToPool(txInstance *Tx) [] *Tx{
 
 
 //View functions
-func ViewTxPool(pool *TxPool){
+func ViewTxPool(pool *TxPool)string{
+	thisTx :=""
 	for _,tx := range (*pool).txList{
-		ViewTx(tx)
+		thisTx += ViewTx(tx)
 	}
+	return thisTx
 }
 
-func ViewTx(tx *Tx){
-	fmt.Println("sender is", tx.sender, "recipient is", tx.recipient, "amount is", tx.amount)
+func ViewTx(tx *Tx)string{
+	var buffer bytes.Buffer
+	buffer.WriteString(" \n ")
+	buffer.WriteString(" Sender is ")
+	buffer.WriteString(tx.sender)
+	buffer.WriteString(" recipient is ")
+	buffer.WriteString(tx.recipient)
+	buffer.WriteString(" amount is ")
+	buffer.WriteString(strconv.Itoa(int(tx.amount)))
+
+	return buffer.String()
 }

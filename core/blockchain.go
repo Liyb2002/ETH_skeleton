@@ -3,6 +3,7 @@ package core
 import (
 	"fmt"
 	"time"
+	"bytes"
 )
 
 type Blockchain struct{
@@ -35,17 +36,32 @@ func ViewBlockHeight(bc *Blockchain)int64{
 	return (*bc).blockHeight
 }
 
-func ViewBlockchain(bc *Blockchain){
+func ViewBlockchain(bc *Blockchain)string{
 	block := (*bc).currentBlock 
+	var buffer bytes.Buffer
+
 
 	for block!=nil{
-		fmt.Println("Block mined by", (*block).miner, "with msg",  (*block).msg, "at time", (*block).timeStamp)
-		
+		buffer.WriteString("Block mined by ")
+		buffer.WriteString((*block).miner)
+		buffer.WriteString(" with msg ")
+		buffer.WriteString((*block).msg)
+		buffer.WriteString("at time ")
+		buffer.WriteString((*block).timeStamp.String())
+		buffer.WriteString("\n")
+		buffer.WriteString("Tx is")
+	
 		//Genesis block has no txPool
 		if block.txPool!=nil{
-			ViewTxPool((*block).txPool)
+			blockTx := ViewTxPool((*block).txPool)
+			buffer.WriteString(blockTx)
 		}
-		fmt.Println("\n")
 		block=block.prev
+		
+		for i:=0; i<3; i++{
+			buffer.WriteString("\n")
+		}
 	}
+	return buffer.String()
+
 }
