@@ -7,6 +7,8 @@ import(
 	"eth/core"
 	"html/template"
 	"strconv"
+	"io/ioutil"
+	"encoding/json"
 )
 
 type Blockchain struct{
@@ -14,9 +16,9 @@ type Blockchain struct{
 }
 
 type TxJson struct{
-	sender string `json:"sender"`
-	recipient string `json:"recipient"`
-	amount int `json:"amount"`
+	Sender string `json:"sender"`
+	Recipient string `json:"recipient"`
+	Amount int `json:"amount"`
 }
 
 var txReceived = []TxJson{}
@@ -26,7 +28,7 @@ func (bc *Blockchain) handleViewBlockchain(w http.ResponseWriter, r *http.Reques
 }
 
 func editHandler(w http.ResponseWriter, r *http.Request) {
-    fmt.Println("method:", r.Method) //get request method
+ //   fmt.Println("method:", r.Method) 
     if r.Method == "GET" {
         t, err := template.ParseFiles("server/tx.html")
 		if err!=nil{
@@ -39,8 +41,12 @@ func editHandler(w http.ResponseWriter, r *http.Request) {
 		TxRecipient := r.Form["recipient"][0]
 		TxAmount, _ := strconv.Atoi (r.Form["amount"][0])
 
-		thisTx := TxJson{TxSender, TxRecipient, TxAmount}
-		txReceived=append(txReceived, thisTx)
+		txReceived=append(txReceived, TxJson{TxSender, TxRecipient, TxAmount})
+		TxJsonW, _ := json.Marshal(txReceived)
+		err := ioutil.WriteFile("server/output.json", TxJsonW, 0644)
+		if err!=nil{
+			panic(err)
+		}
 
 		//Then reload page
 		t, err := template.ParseFiles("server/tx.html")
