@@ -8,9 +8,9 @@ import(
 )
 
 type Tx struct{
-	sender string
-	recipient string
-	amount int64
+	Sender string
+	Recipient string
+	Amount int
 
 }
 type TxPool struct{
@@ -19,7 +19,7 @@ type TxPool struct{
 }
 
 
-func CreateNewTx(sender string, recipient string, amount int64)*Tx{
+func CreateNewTx(sender string, recipient string, amount int)*Tx{
 	return &Tx{sender, recipient, amount}
 }
 
@@ -52,11 +52,11 @@ func ViewTx(tx *Tx)string{
 	var buffer bytes.Buffer
 	buffer.WriteString(" \n ")
 	buffer.WriteString(" Sender is ")
-	buffer.WriteString(tx.sender)
+	buffer.WriteString(tx.Sender)
 	buffer.WriteString(" recipient is ")
-	buffer.WriteString(tx.recipient)
+	buffer.WriteString(tx.Recipient)
 	buffer.WriteString(" amount is ")
-	buffer.WriteString(strconv.Itoa(int(tx.amount)))
+	buffer.WriteString(strconv.Itoa(int(tx.Amount)))
 
 	return buffer.String()
 }
