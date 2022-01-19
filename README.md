@@ -4,7 +4,7 @@ A skeleton code for Ethereum
 Start Project:
 go build
 
-go run . \n
+go run . 
 
 Blockchain Scan:
 http://127.0.0.1:8080/view/
