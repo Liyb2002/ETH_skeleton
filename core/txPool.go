@@ -14,7 +14,7 @@ type Tx struct{
 
 }
 type TxPool struct{
-	timeStamp time.Time
+	TimeStamp time.Time
 	txList [] *Tx
 }
 
@@ -25,7 +25,7 @@ func CreateNewTx(sender string, recipient string, amount int)*Tx{
 
 func CreateNewTxPool()*TxPool{
 	gensisTx := CreateNewTx("gensis", "gensis", 0)
-	return &TxPool{timeStamp:time.Now(), txList:[] *Tx{gensisTx} }
+	return &TxPool{TimeStamp:time.Now(), txList:[] *Tx{gensisTx} }
 }
 
 func (pool *TxPool)AddTxToPool(txInstance *Tx) [] *Tx{
