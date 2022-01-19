@@ -3,6 +3,7 @@ A skeleton code for Ethereum
 
 Start Project:
 go build
+
 go run .
 
 Blockchain Scan:
